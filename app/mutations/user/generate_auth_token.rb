@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User::AuthToken < BaseMutation
+class User::GenerateAuthToken < BaseMutation
   required do
     string :email
     string :password
@@ -13,7 +13,7 @@ class User::AuthToken < BaseMutation
   def execute
     user = User.find_by(email: email)
     if user.present? && user.authenticate(password)
-      return JsonWebToken.encode(user_id: user.id)
+      return { token: JsonWebToken.encode(user_id: user.id) }
     else
       add_error(:base, :not_authenticated, 'Wrong email or password')
     end
