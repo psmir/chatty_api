@@ -1,6 +1,16 @@
+# frozen_string_literal: true
+
 class MainController < ApplicationController
+  QUERIES = [].freeze
+  MUTATIONS = [User::GenerateAuthToken, User::SignUp, User::Say].freeze
+  class OperationNotFountError < StandardError; end
+
   before_action :find_query, only: :query
   before_action :find_mutation, only: :mutation
+
+  rescue_from 'OperationNotFountError' do
+    render json: { error: 'Operation not found' }, status: 404
+  end
 
   def query
     outcome = @query.perform(operation_params, actor: current_user)
@@ -28,10 +38,12 @@ class MainController < ApplicationController
   end
 
   def find_query
-    @query = params[:name].constantize
+    @query = QUERIES.find { |q| q.name == params[:name] }
+    raise OperationNotFountError unless @query.present?
   end
 
   def find_mutation
-    @mutation = params[:name].constantize
+    @mutation = MUTATIONS.find { |m| m.name == params[:name] }
+    raise OperationNotFountError unless @mutation.present?
   end
 end
