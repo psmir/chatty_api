@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   get :query, to: 'main#query'
   post :mutation, to: 'main#mutation'
+
+  mount ActionCable.server, at: '/cable'
 end

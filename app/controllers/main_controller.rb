@@ -2,7 +2,7 @@
 
 class MainController < ApplicationController
   QUERIES = [].freeze
-  MUTATIONS = [User::GenerateAuthToken, User::SignUp, User::Say].freeze
+  MUTATIONS = [User::GenerateAuthToken, User::SignUp, User::Say, Message::Latest].freeze
   class OperationNotFountError < StandardError; end
 
   before_action :find_query, only: :query
@@ -34,7 +34,7 @@ class MainController < ApplicationController
   private
 
   def operation_params
-    params.require(:payload).permit!
+    params[:payload] || {}
   end
 
   def find_query

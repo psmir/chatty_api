@@ -2,7 +2,7 @@
 
 class User::Say < BaseMutation
   required do
-    string :message
+    string :body
   end
 
   def authorized?
@@ -10,6 +10,16 @@ class User::Say < BaseMutation
   end
 
   def execute
-    puts "Message from #{actor.email}: #{message}"
+    record = actor.messages.create(body: body)
+    ActionCable.server.broadcast(
+      'ChatChannel',
+      message: {
+        id: record.id,
+        author: actor.email,
+        body: record.body
+      }
+    )
+
+    puts "Message from #{actor.email}: #{record.body}"
   end
 end

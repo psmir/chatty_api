@@ -42,5 +42,8 @@ module Starterkit
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+
+    # As we use mutations gem we don't need strong parameters
+    config.action_controller.permit_all_parameters = true
   end
 end
