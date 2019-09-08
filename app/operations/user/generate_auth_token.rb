@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User::GenerateAuthToken < BaseMutation
+class User::GenerateAuthToken < BaseOperation
   required do
     string :email
     string :password

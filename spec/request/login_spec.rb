@@ -6,7 +6,7 @@ describe 'Login', type: :request do
   let!(:user) { create :user }
 
   before do
-    post '/mutation/', params: {
+    post '/operation/', params: {
       name: 'User::GenerateAuthToken',
       payload: {
         email: user.email,

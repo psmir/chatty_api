@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User::Say < BaseMutation
+class User::Say < BaseOperation
   required do
     string :body
   end

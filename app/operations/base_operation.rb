@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-class BaseQuery < Mutations::Command
+class BaseOperation < Mutations::Command
   optional do
     model :actor, class: User
+  end
+
+  def self.descendantsf
+    ObjectSpace.each_object(Class).select { |klass| klass < self }
   end
 
   def validate

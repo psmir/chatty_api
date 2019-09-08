@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Message::Latest < BaseMutation
+class Message::Latest < BaseOperation
   def authorized?
     actor.present?
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User::SignUp < BaseMutation
+class User::SignUp < BaseOperation
   required do
     string :email
     string :password
