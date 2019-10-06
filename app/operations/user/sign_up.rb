@@ -20,6 +20,6 @@ class User::SignUp < BaseOperation
     user = User.new(email: email, password: password)
     add_error(:base, :something_wrong, 'Something went wrong') && return unless user.save
 
-    User::GenerateAuthToken.run(email: email, password: password).result
+    { user_id: user.id }
   end
 end

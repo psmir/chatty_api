@@ -32,16 +32,14 @@ module Starterkit
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_starterkit_cookie', expire_after: 30.days, domain: :all
+    config.action_dispatch.cookies_serializer = :json
+
+
     config.autoload_paths << Rails.root.join("lib")
     config.eager_load_paths << Rails.root.join("lib")
 
-    # TODO: restrict the rules
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :options]
-      end
-    end
 
     # As we use mutations gem we don't need strong parameters
     config.action_controller.permit_all_parameters = true
