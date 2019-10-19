@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class MainController < ApplicationController
-  OPERATIONS = [
-    User::SignIn, User::SignOut, User::SignUp, User::Say,
-    User::FetchCurrent, Message::Latest
-  ].freeze
-
   class OperationNotFountError < StandardError; end
 
   before_action :find_operation, only: :operation
@@ -61,7 +56,8 @@ class MainController < ApplicationController
   end
 
   def find_operation
-    @operation = OPERATIONS.find { |m| m.name == params[:name] }
-    raise OperationNotFountError unless @operation.present?
+    raise OperationNotFountError unless BaseOperation.has_descendant?(params[:name])
+
+    @operation = params[:name].constantize
   end
 end

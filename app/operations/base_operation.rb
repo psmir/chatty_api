@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class BaseOperation < Mutations::Command
+  def self.has_descendant?(name)
+    descendants.map(&:to_s).include?(name)
+  end
+
   optional do
     model :actor, class: User
   end

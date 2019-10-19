@@ -9,6 +9,12 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # We need to preload operations for BaseOperation.descendants to work properly in development mode
+  config.eager_load_paths += Dir[Rails.root.join('app', 'operations', '**/*.rb')]
+  ActiveSupport::Reloader.to_prepare do
+    Dir[Rails.root.join('app', 'operations', '**/*.rb')].each { |file| require_dependency file }
+  end
+
   # Show full error reports.
   config.consider_all_requests_local = true
 

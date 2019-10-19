@@ -12,6 +12,12 @@ Rails.application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
+  # We need to preload operations for BaseOperation.descendants to work properly in test mode
+  config.eager_load_paths += Dir[Rails.root.join('app', 'operations', '**/*.rb')]
+  ActiveSupport::Reloader.to_prepare do
+    Dir[Rails.root.join('app', 'operations', '**/*.rb')].each { |file| require_dependency file }
+  end
+
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
