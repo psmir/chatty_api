@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BaseOperation < Mutations::Command
-  def self.has_descendant?(name)
+  def self.descendant?(name)
     descendants.map(&:to_s).include?(name)
   end
 

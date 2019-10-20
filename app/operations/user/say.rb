@@ -11,15 +11,7 @@ class User::Say < BaseOperation
 
   def execute
     record = actor.messages.create(body: body)
-    ActionCable.server.broadcast(
-      'ChatChannel',
-      message: {
-        id: record.id,
-        author: actor.email,
-        body: record.body
-      }
-    )
 
-    puts "Message from #{actor.email}: #{record.body}"
+    { id: record.id, body: record.body }
   end
 end

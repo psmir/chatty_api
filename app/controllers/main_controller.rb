@@ -13,6 +13,7 @@ class MainController < ApplicationController
     puts "$$$$$$ #{session[:user_id]}"
     outcome = @operation.run(operation_params, actor: current_user)
     after_operation_hook outcome
+    broadcast outcome
 
     if outcome.success?
       render json: { success: true, payload: outcome.result }
@@ -56,8 +57,15 @@ class MainController < ApplicationController
   end
 
   def find_operation
-    raise OperationNotFountError unless BaseOperation.has_descendant?(params[:name])
+    raise OperationNotFountError unless BaseOperation.descendant?(params[:name])
 
     @operation = params[:name].constantize
+  end
+
+  def broadcast(outcome)
+    broadcaster_name = "#{params[:name]}Broadcaster"
+    return unless BaseBroadcaster.descendant?(broadcaster_name)
+
+    broadcaster_name.constantize.execute(operation_params, outcome, current_user)
   end
 end
