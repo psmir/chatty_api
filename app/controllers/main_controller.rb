@@ -35,19 +35,19 @@ class MainController < ApplicationController
   def after_user_sign_in(outcome)
     return unless outcome.success?
 
-    session[:user_id] = outcome.result[:user_id]
+    store_in_session(:user_id, outcome.result[:user_id])
   end
 
   def after_user_sign_up(outcome)
     return unless outcome.success?
 
-    session[:user_id] = outcome.result[:user_id]
+    store_in_session(:user_id, outcome.result[:user_id])
   end
 
   def after_user_sign_out(outcome)
     return unless outcome.success?
 
-    session[:user_id] = nil
+    remove_from_session(:user_id)
   end
 
   private
