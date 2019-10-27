@@ -7,7 +7,7 @@ describe 'Login', type: :request do
 
   before do
     post '/operation/', params: {
-      name: 'User::GenerateAuthToken',
+      name: 'User::SignIn',
       payload: {
         email: user.email,
         password: user.password
@@ -17,6 +17,6 @@ describe 'Login', type: :request do
 
   it 'returns the token' do
     expect(json['success']).to be_truthy
-    expect(json['payload']['token']).to be_present
+    expect(json['payload']['user_id']).to be_present
   end
 end
