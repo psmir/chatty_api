@@ -5,6 +5,23 @@ class BaseOperation < Mutations::Command
     descendants.map(&:to_s).include?(name)
   end
 
+  def self.run_and_broadcast(params, actor:, broadcaster: nil)
+    broadcaster ||= infer_broadcaster
+    if broadcaster.nil?
+      raise NotImplementedError.new(message: 'Define or pass the broadcaster')
+    end
+
+    outcome = run(params, actor: actor)
+    broadcaster.execute(params, outcome, actor)
+  end
+
+  def self.infer_broadcaster
+    broadcaster_name = "#{name}Broadcaster"
+    return unless BaseBroadcaster.descendant?(broadcaster_name)
+
+    broadcaster_name.constantize
+  end
+
   optional do
     model :actor, class: User
   end

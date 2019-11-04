@@ -10,7 +10,6 @@ class MainController < ApplicationController
   end
 
   def operation
-    puts "$$$$$$ #{session[:user_id]}"
     outcome = @operation.run(operation_params, actor: current_user)
     after_operation_hook outcome
     broadcast outcome
@@ -63,9 +62,9 @@ class MainController < ApplicationController
   end
 
   def broadcast(outcome)
-    broadcaster_name = "#{params[:name]}Broadcaster"
-    return unless BaseBroadcaster.descendant?(broadcaster_name)
+    broadcaster = @operation.infer_broadcaster
+    return if broadcaster.nil?
 
-    broadcaster_name.constantize.execute(operation_params, outcome, current_user)
+    broadcaster.execute(operation_params, outcome, current_user)
   end
 end

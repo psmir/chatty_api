@@ -6,7 +6,6 @@ class ApplicationController < ActionController::API
 
   def current_user
     user_id = read_from_session(:user_id)
-    puts "************* #{user_id} "
     return unless user_id.present?
 
     @current_user ||= User.find_by(id: user_id)

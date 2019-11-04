@@ -1,20 +1,13 @@
+# frozen_string_literal: true
+
 class ChatChannel < ApplicationCable::Channel
   def subscribed
-    current_user.set_online!
-    broadcast_users
+    User::SetOnline.run_and_broadcast({ user_id: current_user.id }, actor: current_user)
     stream_from 'ChatChannel'
   end
 
   def unsubscribed
-    current_user.set_offline!
-    broadcast_users
+    User::SetOffline.run_and_broadcast({ user_id: current_user.id }, actor: current_user)
     # Any cleanup needed when channel is unsubscribed
-  end
-
-  def broadcast_users
-    ActionCable.server.broadcast(
-      'UserListChannel',
-      users: User.order(:email).select(:id, :email, :online)
-    )
   end
 end
