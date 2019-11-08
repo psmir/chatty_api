@@ -6,7 +6,7 @@ class Message::Latest < BaseOperation
   end
 
   def execute
-    Message.latest(10).map do |msg|
+    Message.last(10).map do |msg|
       { id: msg.id, author: msg.user.email, body: msg.body}
     end
   end
