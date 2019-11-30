@@ -40,6 +40,9 @@ group :development, :test do
   gem 'faker', '~> 1.9.6'
   gem 'factory_bot_rails', '~> 5.0.2'
   gem 'database_cleaner', '~> 1.7.0'
+  gem 'capybara', '~> 3.29.0'
+  gem 'selenium-webdriver', '~> 3.142.6'
+  gem 'launchy', '~> 2.4.3'
 end
 
 group :development do

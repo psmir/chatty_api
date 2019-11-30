@@ -11,6 +11,7 @@ class User::SignIn < BaseOperation
   end
 
   def execute
+    # debugger
     user = User.find_by(email: email)
     return { user_id: user.id } if user.present? && user.authenticate(password)
 
