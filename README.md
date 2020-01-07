@@ -22,3 +22,13 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+End to end testing:
+
+In the directory with the client app please execute
+$ npx vue-cli-service serve --mode test --port 8081
+
+After that you can run feature specs:
+
+$ bundle exec rspec spec/features
