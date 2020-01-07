@@ -31,6 +31,7 @@ gem 'rack-cors', '~> 1.0.3'
 
 gem 'bcrypt', '~> 3.1.13'
 gem 'kaminari', '~> 1.1.1'
+gem 'wisper', '2.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

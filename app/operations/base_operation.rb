@@ -1,25 +1,34 @@
 # frozen_string_literal: true
 
 class BaseOperation < Mutations::Command
+  extend Wisper::Publisher
+
   def self.descendant?(name)
     descendants.map(&:to_s).include?(name)
   end
 
-  def self.run_and_broadcast(params, actor:, broadcaster: nil)
-    broadcaster ||= infer_broadcaster
-    if broadcaster.nil?
-      raise NotImplementedError.new(message: 'Define or pass the broadcaster')
+  def self.run!(params, actor: nil)
+    outcome = run(params, actor: actor)
+
+    if outcome.success?
+      publish(success_event_name.to_sym, outcome.result, actor)
+    else
+      publish(failure_event_name.to_sym, outcome.errors.message, actor)
     end
 
-    outcome = run(params, actor: actor)
-    broadcaster.execute(params, outcome, actor)
+    outcome
   end
 
-  def self.infer_broadcaster
-    broadcaster_name = "#{name}Broadcaster"
-    return unless BaseBroadcaster.descendant?(broadcaster_name)
+  def self.base_event_name
+    to_s.underscore.gsub('/', '_')
+  end
 
-    broadcaster_name.constantize
+  def self.success_event_name
+    base_event_name + '_success'
+  end
+
+  def self.failure_event_name
+    base_event_name + '_failure'
   end
 
   optional do

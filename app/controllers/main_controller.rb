@@ -10,9 +10,8 @@ class MainController < ApplicationController
   end
 
   def operation
-    outcome = @operation.run(operation_params, actor: current_user)
+    outcome = @operation.run!(operation_params, actor: current_user)
     after_operation_hook outcome
-    broadcast outcome
 
     if outcome.success?
       render json: { success: true, payload: outcome.result }
@@ -59,12 +58,5 @@ class MainController < ApplicationController
     raise OperationNotFountError unless BaseOperation.descendant?(params[:name])
 
     @operation = params[:name].constantize
-  end
-
-  def broadcast(outcome)
-    broadcaster = @operation.infer_broadcaster
-    return if broadcaster.nil?
-
-    broadcaster.execute(operation_params, outcome, current_user)
   end
 end

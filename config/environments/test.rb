@@ -18,12 +18,6 @@ Rails.application.configure do
     Dir[Rails.root.join('app', 'operations', '**/*.rb')].each { |file| require_dependency file }
   end
 
-  # We need to preload broadcasters for BaseBroadcaster.descendants to work properly in test mode
-  config.eager_load_paths += Dir[Rails.root.join('app', 'broadcasters', '**/*.rb')]
-  ActiveSupport::Reloader.to_prepare do
-    Dir[Rails.root.join('app', 'broadcasters', '**/*.rb')].each { |file| require_dependency file }
-  end
-
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
