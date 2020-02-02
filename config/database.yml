@@ -12,6 +12,14 @@ development:
   username: <%= ENV["RAILS_DATABASE_USER"] %>
   password: <%= ENV["RAILS_DATABASE_PASSWORD"] %>
 
+production:
+  <<: *default
+  encoding: unicode
+  database: chatty
+  host: localhost
+  username: <%= ENV["RAILS_DATABASE_USER"] %>
+  password: <%= ENV["RAILS_DATABASE_PASSWORD"] %>
+
 
 test:
   <<: *default
