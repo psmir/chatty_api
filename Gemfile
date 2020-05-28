@@ -30,7 +30,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rack-cors', '~> 1.0.3'
 
 gem 'bcrypt', '~> 3.1.13'
-gem 'kaminari', '~> 1.1.1'
+gem 'kaminari', '~> 1.2.1'
 gem 'wisper', '2.0.0'
 gem 'redis', '~> 4.1.3'
 
